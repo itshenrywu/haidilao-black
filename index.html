@@ -33,10 +33,10 @@
 </head>
 <body>
 	<div class="ts-container" id="app">
-		<div class="ts-wrap is-vertical has-vertically-spaced-large">
+		<div class="ts-wrap is-vertical has-vertically-spaced-large is-relaxed">
 			<h1 class="ts-header is-big is-center-aligned">Henry 的海底撈黑海會員之路</h1>
 			<div>
-				<div class="ts-progress is-small">
+				<div class="ts-progress" :class="{ 'is-active': point < target }">
 					<div class="bar" :style="{ '--value': point / target * 100 }">
 						<div class="text">{{ point | num }}</div>
 					</div>
@@ -56,7 +56,7 @@
 			</div>
 			<div class="ts-box" v-if="point < target">
 				<div class="ts-content">
-					<div class="ts-text">距離黑海會員還需要</div>
+					<div class="ts-text is-label has-bottom-spaced-small">距離黑海會員還需要</div>
 					<div class="ts-header is-large">{{ target - point | num }} 積分
 						<small>( $ {{ (target - point)*5 }} )</small>
 					</div>

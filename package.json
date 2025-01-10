@@ -1,0 +1,19 @@
+{
+  "name": "hdl-test",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "gen": "node gen.js",
+    "minify": "npx cleancss -o tocas.min.css tocas/tocas.css"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "ejs": "^3.1.10"
+  },
+  "devDependencies": {
+    "clean-css-cli": "^5.6.3"
+  }
+}

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+	<title>Henry 的海底撈黑海會員之路</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="Henry 距離海底撈黑海會員還需要多少積分呢？">
+	<link rel="stylesheet" href="tocas.min.css" />
+	<style>
+		.progress-levels {
+			text-align: right;
+			line-height: 1rem;
+		}
+
+		.progress-levels .column {
+			padding-top: .5rem;
+		}
+
+		.progress-levels small {
+			display: block;
+			text-align: right;
+			font-size: .7rem;
+			color: var(--ts-gray-500);
+		}
+
+		.ts-header small {
+			font-size: 70%;
+			color: var(--ts-gray-500);
+			padding-left: 1rem;
+		}
+	</style>
+</head>
+<body>
+	<div class="ts-container is-narrow has-vertically-padded-large">
+		<div class="ts-wrap is-vertical has-vertically-spaced-large is-relaxed">
+			<h1 class="ts-header is-big is-center-aligned">Henry 的海底撈黑海會員之路</h1>
+			<div>
+				<div class="ts-progress">
+					<div class="bar" style="--value: <%= totalPoint / target * 100 %>">
+						<div class="text"><%= totalPoint.toLocaleString() %></div>
+					</div>
+				</div>
+				<div class="ts-grid progress-levels">
+					<% levels.forEach((level, index) => { %>
+						<div class="column <%= index === levels.length - 1 ? 'is-fluid' : '' %>"
+							<% if (index !== levels.length - 1) { %>
+								style="width: <%= (level.addPoint / target) * 100 %>%"
+							<% } %>>
+							<%= level.name %>
+							<small>
+								<%= level.point.toLocaleString() %>
+								<% if (level.point <= totalPoint) { %>
+									<span class="ts-icon is-circle-check-icon"></span>
+								<% } %>
+							</small>
+						</div>
+					<% }) %>
+				</div>							
+			</div>
+			<div class="ts-box" <% if (totalPoint >= target) { %>style="display: none;"<% } %>>
+				<div class="ts-content">
+					<div class="ts-text is-label has-bottom-spaced-small">距離黑海會員還需要</div>
+					<div class="ts-header is-large"><%= (target - totalPoint).toLocaleString() %> 積分
+						<small>( $ <%= ((target - totalPoint) * 5).toLocaleString() %> )</small>
+					</div>
+				</div>
+				<div class="symbol"><span class="ts-icon is-trophy-icon"></span></div>
+			</div>
+			<div class="ts-box">
+				<table class="ts-table is-small">
+					<thead>
+						<tr>
+							<th>日期</th>
+							<th>花費金額</th>
+							<th>獲得積分</th>
+							<th>累積積分</th>
+						</tr>
+					</thead>
+					<tbody>
+						<% logs.forEach(log => { %>
+							<tr>
+								<td><%= log.day %></td>
+								<td>$ <%= (log.point * 5).toLocaleString() %></td>
+								<td><%= log.point.toLocaleString() %></td>
+								<td><%= log.totalPoint.toLocaleString() %></td>
+							</tr>
+						<% }) %>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

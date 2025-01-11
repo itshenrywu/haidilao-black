@@ -29,6 +29,8 @@ jobs:
         mkdir deploy
         cp index.html deploy/
         cp tocas.min.css deploy/
+        mkdir deploy/fonts
+        cp fonts/* deploy/fonts/
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3

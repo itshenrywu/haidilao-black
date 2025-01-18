@@ -1,0 +1,83 @@
+name: Update Log on New Issue
+
+on:
+  issues:
+    types:
+      - opened
+
+jobs:
+  analyze-and-update:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Analyze issue content
+      id: analyze_issue
+      run: |
+        echo "Analyzing issue..."
+        TITLE="${{ github.event.issue.title }}"
+        BODY="${{ github.event.issue.body }}"
+        AUTHOR="${{ github.event.issue.user.login }}"
+        OWNER="${{ github.repository_owner }}"
+
+        if [[ "$AUTHOR" != "$OWNER" ]]; then
+          echo "::set-output name=success::false"
+          echo "::set-output name=message::Issue not created by repository owner ($OWNER)."
+          exit 0
+        fi
+
+        if [[ ! $TITLE =~ ^[0-9]{4}/[0-9]{1,2}/[0-9]{1,2}$ ]]; then
+          echo "::set-output name=success::false"
+          echo "::set-output name=message::Title is not a valid date (YYYY/MM/DD)."
+          exit 0
+        fi
+
+        if [[ ! $BODY =~ ^[0-9]+$ ]]; then
+          echo "::set-output name=success::false"
+          echo "::set-output name=message::Body is not a valid positive integer."
+          exit 0
+        fi
+
+        echo "::set-output name=success::true"
+        echo "::set-output name=message::Log updated successfully."
+        echo "day=$TITLE" >> $GITHUB_ENV
+        echo "point=$BODY" >> $GITHUB_ENV
+
+    - name: Update logs.json if valid
+      if: steps.analyze_issue.outputs.success == 'true'
+      run: |
+        echo "Updating logs.json..."
+        LOGS_FILE="data/logs.json"
+
+        if [ ! -f "$LOGS_FILE" ]; then
+          echo "::error::$LOGS_FILE does not exist."
+          exit 1
+        fi
+
+        NEW_ENTRY="{ \"day\": \"$day\", \"point\": $point }"
+        jq ". + [$NEW_ENTRY]" "$LOGS_FILE" > tmp.$$.json && mv tmp.$$.json "$LOGS_FILE"
+
+    - name: Commit and push changes
+      if: steps.analyze_issue.outputs.success == 'true'
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: "Update logs.json from issue #${{ github.event.issue.number }}"
+        file_pattern: data/logs.json
+
+    - name: Comment on the issue and close
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        SUCCESS="${{ steps.analyze_issue.outputs.success }}"
+        MESSAGE="${{ steps.analyze_issue.outputs.message }}"
+
+        if [ "$SUCCESS" == "true" ]; then
+          COMMENT="✅ $MESSAGE"
+        else
+          COMMENT="❌ $MESSAGE"
+        fi
+
+        gh issue comment ${{ github.event.issue.number }} --body "$COMMENT"
+        gh issue close ${{ github.event.issue.number }}

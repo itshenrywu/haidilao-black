@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - main
+  workflow_run:
+    workflows: [Update Log on New Issue]
+    types:
+      - completed
 
 jobs:
   build:

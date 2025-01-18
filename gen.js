@@ -3,6 +3,7 @@ const ejs = require('ejs');
 
 let levels = [{ name: '紅海', point: 0 }, { name: '銀海', point: 1600 }, { name: '金海', point: 6000 }, { name: '黑海', point: 10000 }];
 let logs = JSON.parse(fs.readFileSync('./data/logs.json', 'utf8'));
+logs.sort((a, b) => new Date(b.day) - new Date(a.day));
 
 let totalPoint = 0;
 logs = logs.reduceRight((acc, log) => {

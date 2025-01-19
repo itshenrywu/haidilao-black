@@ -8,7 +8,7 @@
 	<link rel="stylesheet" href="tocas.min.css" />
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap" rel="stylesheet">
 	<style>
 		@font-face {
 			font-family: 'icomoon';
@@ -81,15 +81,15 @@
 		.number {
 			font-family: "Roboto", serif;
 			font-optical-sizing: auto;
-			font-weight: 300;
+			font-weight: 400;
 			font-style: normal;
 			font-variation-settings: "wdth" 100;
-			letter-spacing: .075em;
+			letter-spacing: .1em;
 		}
 
 		td .number:nth-child(2) {
 			display: inline-block;
-			width: 2.75em;
+			min-width: 3em;
 		}
 	</style>
 </head>
@@ -137,7 +137,7 @@
 					<tbody>
 						<% logs.forEach(log => { %>
 							<tr>
-								<td><%= log.day %></td>
+								<td class="number"><%= log.day %></td>
 								<td>
 									<span class="number">$</span>
 									<span class="number"><%= (log.point * 5).toLocaleString() %></span>

@@ -6,6 +6,9 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<meta name="description" content="Henry 距離海底撈黑海會員還需要多少積分呢？">
 	<link rel="stylesheet" href="tocas.min.css" />
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
 	<style>
 		@font-face {
 			font-family: 'icomoon';
@@ -69,6 +72,25 @@
 			opacity: .1;
 			overflow: hidden;
 		}
+
+		th:nth-child(2), th:nth-child(3), th:nth-child(4),
+		td:nth-child(2), td:nth-child(3), td:nth-child(4) {
+			text-align: right;
+		}
+
+		.number {
+			font-family: "Roboto", serif;
+			font-optical-sizing: auto;
+			font-weight: 300;
+			font-style: normal;
+			font-variation-settings: "wdth" 100;
+			letter-spacing: .075em;
+		}
+
+		td .number:nth-child(2) {
+			display: inline-block;
+			width: 2.75em;
+		}
 	</style>
 </head>
 <body>
@@ -78,7 +100,7 @@
 			<div>
 				<div class="ts-progress">
 					<div class="bar" style="--value: <%= totalPoint / target * 100 %>">
-						<div class="text"><%= totalPoint.toLocaleString() %></div>
+						<div class="text number"><%= totalPoint.toLocaleString() %></div>
 					</div>
 				</div>
 				<div class="ts-grid progress-levels">
@@ -86,7 +108,7 @@
 						<div class="column <%= index === levels.length - 1 ? 'is-fluid' : '' %>" <% if (index !== levels.length - 1) { %> style="width: <%= (level.addPoint / target) * 100 %>%" <% } %>>
 							<%= level.name %>
 							<small>
-								<%= level.point.toLocaleString() %>
+								<span class="number"><%= level.point.toLocaleString() %></span>
 								<% if (level.point <= totalPoint) { %> <span class="icon-check-circle"></span> <% } %>
 							</small>
 						</div>
@@ -96,8 +118,8 @@
 			<div class="ts-box" <% if (totalPoint >= target) { %>style="display: none;"<% } %>>
 				<div class="ts-content">
 					<div class="ts-text is-label has-bottom-spaced-small">距離黑海會員還需要</div>
-					<div class="ts-header is-large"><%= (target - totalPoint).toLocaleString() %> 積分
-						<small>( $ <%= ((target - totalPoint) * 5).toLocaleString() %> )</small>
+					<div class="ts-header is-large"><span class="number"><%= (target - totalPoint).toLocaleString() %></span>&nbsp;積分
+						<small class="number">( $ <%= ((target - totalPoint) * 5).toLocaleString() %> )</small>
 					</div>
 				</div>
 				<span class="icon-trophy"></span>
@@ -116,9 +138,12 @@
 						<% logs.forEach(log => { %>
 							<tr>
 								<td><%= log.day %></td>
-								<td>$ <%= (log.point * 5).toLocaleString() %></td>
-								<td><%= log.point.toLocaleString() %></td>
-								<td><%= log.totalPoint.toLocaleString() %></td>
+								<td>
+									<span class="number">$</span>
+									<span class="number"><%= (log.point * 5).toLocaleString() %></span>
+								</td>
+								<td><span class="number"><%= log.point.toLocaleString() %></span></td>
+								<td><span class="number"><%= log.totalPoint.toLocaleString() %></span></td>
 							</tr>
 						<% }) %>
 					</tbody>

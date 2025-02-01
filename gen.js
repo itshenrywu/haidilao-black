@@ -7,6 +7,10 @@ logs.sort((a, b) => new Date(b.day) - new Date(a.day));
 
 let totalPoint = 0;
 logs = logs.reduceRight((acc, log) => {
+    log.pay = log.point * 5;
+    if(totalPoint >= 150) { // 消費滿 $750，多送 150 點
+        log.point += 150;
+    }
     totalPoint += log.point;
     acc.unshift({ ...log, totalPoint });
     return acc;

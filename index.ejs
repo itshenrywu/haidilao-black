@@ -115,15 +115,25 @@
 					<% }) %>
 				</div>							
 			</div>
-			<div class="ts-box" <% if (totalPoint >= target) { %>style="display: none;"<% } %>>
-				<div class="ts-content">
-					<div class="ts-text is-label has-bottom-spaced-small">距離黑海會員還需要</div>
-					<div class="ts-header is-large"><span class="number"><%= (target - totalPoint).toLocaleString() %></span>&nbsp;積分
-						<small class="number">( $ <%= ((target - totalPoint) * 5).toLocaleString() %> )</small>
+			<% if (totalPoint < target) { %>
+				<div class="ts-box">
+					<div class="ts-content">
+						<div class="ts-text is-label has-bottom-spaced-small">距離黑海會員還需要</div>
+						<div class="ts-header is-large"><span class="number"><%= (target - totalPoint).toLocaleString() %></span>&nbsp;積分
+							<small class="number">( $ <%= ((target - totalPoint) * 5).toLocaleString() %> )</small>
+						</div>
 					</div>
+					<span class="icon-trophy"></span>
 				</div>
-				<span class="icon-trophy"></span>
-			</div>
+			<% } else { %>
+				<div class="ts-box">
+					<div class="ts-content">
+						<div class="ts-text is-label has-bottom-spaced-small">已達成！</div>
+						<div class="ts-header">新挑戰：<a href="https://haidilao-100.henrywu.tw/">海底撈 100 次用餐之路</a></div>
+					</div>
+					<span class="icon-trophy"></span>
+				</div>
+			<% } %>
 			<div class="ts-box">
 				<table class="ts-table is-small">
 					<thead>

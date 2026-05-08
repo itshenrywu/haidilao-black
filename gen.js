@@ -6,12 +6,14 @@ let logs = JSON.parse(fs.readFileSync('./data/logs.json', 'utf8'));
 logs.sort((a, b) => new Date(b.day) - new Date(a.day));
 
 let totalPoint = 0;
+let totalSpend = 0;
 logs = logs.reduceRight((acc, log) => {
     log.pay = log.point * 5;
     if(log.pay >= 750) { // 消費滿 $750，多送 150 點
         log.point += 150;
     }
     totalPoint += log.point;
+    totalSpend += log.pay;
     acc.unshift({ ...log, totalPoint });
     return acc;
 }, []);
@@ -24,7 +26,7 @@ levels = levels.slice(1);
 
 const template = fs.readFileSync('./index.ejs', 'utf8');
 
-const output = ejs.render(template, { logs, levels, totalPoint, target });
+const output = ejs.render(template, { logs, levels, totalPoint, totalSpend, target });
 
 fs.writeFileSync('./index.html', output);
 console.log('generate success!');
